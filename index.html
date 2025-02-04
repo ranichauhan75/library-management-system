@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-delete {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Library Management System</h2>
+        <input type="text" id="search" placeholder="Search books..." onkeyup="searchBook()">
+        <form id="book-form">
+            <input type="text" id="title" placeholder="Book Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="text" id="isbn" placeholder="ISBN" required>
+            <button class="btn" type="submit">Add Book</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="book-list"></tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('book-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let title = document.getElementById('title').value;
+            let author = document.getElementById('author').value;
+            let isbn = document.getElementById('isbn').value;
+            let list = document.getElementById('book-list');
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${title}</td><td>${author}</td><td>${isbn}</td><td><button class="btn btn-delete" onclick="deleteBook(this)">Delete</button></td>`;
+            list.appendChild(row);
+            document.getElementById('book-form').reset();
+        });
+
+        function deleteBook(btn) {
+            btn.parentElement.parentElement.remove();
+        }
+        
+        function searchBook() {
+            let filter = document.getElementById('search').value.toLowerCase();
+            let rows = document.querySelectorAll('#book-list tr');
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
